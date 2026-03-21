@@ -1,0 +1,37 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.36414.22
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Abstracciones", "Abstracciones\Abstracciones.csproj", "{5AAACF15-BEBC-4017-9231-CBA6E23F5074}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Reglas", "Reglas\Reglas.csproj", "{7332E3C7-A5F7-453D-8A48-08D999B12B2B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Web", "Web\Web.csproj", "{4B53F2E8-DE22-4ACE-ACA8-AD2EE16E0813}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{5AAACF15-BEBC-4017-9231-CBA6E23F5074}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5AAACF15-BEBC-4017-9231-CBA6E23F5074}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5AAACF15-BEBC-4017-9231-CBA6E23F5074}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5AAACF15-BEBC-4017-9231-CBA6E23F5074}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7332E3C7-A5F7-453D-8A48-08D999B12B2B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7332E3C7-A5F7-453D-8A48-08D999B12B2B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7332E3C7-A5F7-453D-8A48-08D999B12B2B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7332E3C7-A5F7-453D-8A48-08D999B12B2B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4B53F2E8-DE22-4ACE-ACA8-AD2EE16E0813}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4B53F2E8-DE22-4ACE-ACA8-AD2EE16E0813}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4B53F2E8-DE22-4ACE-ACA8-AD2EE16E0813}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4B53F2E8-DE22-4ACE-ACA8-AD2EE16E0813}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {600F6CF9-502B-4250-8C07-BB31B91AB107}
+	EndGlobalSection
+EndGlobal

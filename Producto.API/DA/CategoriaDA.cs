@@ -1,0 +1,27 @@
+﻿using Abstracciones.Interfaces.DA;
+using Abstracciones.Modelos;
+using Dapper;
+using Microsoft.Data.SqlClient;
+using System.Text.RegularExpressions;
+
+namespace DA
+{
+    public class CategoriaDA: ICategoriaDA
+    {
+        private IRepositorioDapper _repositorioDapper;
+        private SqlConnection _sqlConnection;
+
+        public CategoriaDA(IRepositorioDapper repositorioDapper)
+        {
+            _repositorioDapper = repositorioDapper;
+            _sqlConnection = _repositorioDapper.ObtenerRepositorio();
+        }
+
+        public async Task<IEnumerable<Categoria>> Obtener()
+        {
+            string query = "ObtenerCategorias";
+            var resultadoConsulta = await _sqlConnection.QueryAsync<Categoria>(query);
+            return resultadoConsulta;
+        }
+    }
+}
