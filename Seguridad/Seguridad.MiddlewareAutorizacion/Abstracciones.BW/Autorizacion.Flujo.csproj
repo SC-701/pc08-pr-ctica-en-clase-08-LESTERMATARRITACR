@@ -5,7 +5,7 @@
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>enable</Nullable>
 		<Version>1.0.0</Version>
-		<PackageId>Autorizacion.Middleware.LESTERMATARRITACR</PackageId>
+		<PackageId>Autorizacion.Flujo.LESTERMATARRITACR</PackageId>
 		<Authors>Drojascode</Authors>
 		<Description>Lógica de negocio del paquete de autorización. Agrega perfiles del usuario como claims al ClaimsPrincipal</Description>
 		<RepositoryUrl>https://github.com/SC701</RepositoryUrl>
@@ -17,7 +17,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<None Include="..\..\..\README.md" Pack="true" PackagePath="\" />
+		<None Include="..\README.md" Pack="true" PackagePath="\" />
 	</ItemGroup>
 
 </Project>
