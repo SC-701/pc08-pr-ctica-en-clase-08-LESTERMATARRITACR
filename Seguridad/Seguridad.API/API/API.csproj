@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
@@ -11,15 +11,14 @@
     <PackageReference Include="Autorizacion.DA.LESTERMATARRITACR" Version="1.0.0" />
     <PackageReference Include="Autorizacion.Flujo.LESTERMATARRITACR" Version="1.0.1" />
     <PackageReference Include="Autorizacion.Middleware.LESTERMATARRITACR" Version="1.0.0" />
-    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.7" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Abstracciones\Abstracciones.csproj" />
-    <ProjectReference Include="..\DA\DA.csproj" />
     <ProjectReference Include="..\Flujo\Flujo.csproj" />
+    <ProjectReference Include="..\DA\DA.csproj" />
     <ProjectReference Include="..\Reglas\Reglas.csproj" />
-    <ProjectReference Include="..\Servicios\Servicios.csproj" />
   </ItemGroup>
 
 </Project>
