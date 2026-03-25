@@ -1,30 +1,20 @@
-# This workflow will deploy SQL Server Database Project to Azure SQL Database
-#
-# To configure this workflow:
-#
-# 1. Create an Azure SQL Database in the Azure Portal
-# 2. Create a secret in your repository named AZURE_SQL_CONNECTION_STRING with your database connection string
-# 3. Update the environment variables below with your database details
-#
-# For more information on GitHub Actions for Azure: https://github.com/Azure/Actions
-# For more information on SQL Database deployment: https://docs.microsoft.com/en-us/azure/azure-sql/database/
-
-name: Deploy Seguridad Producto Database to Azure SQL
+name: Deploy Seguridad Productos Database to Azure SQL
 
 env:
-  AZURE_SQL_SERVER: administradordos.database.windows.net   # Tu servidor SQL de Azure (ejemplo: producto-db-server.database.windows.net)
-  AZURE_SQL_DATABASE: productoSeguridad   # Nombre de tu base de datos
-  DACPAC_PATH: 'Seguridad/Seguridad.API/BD/bin/Release/BD.dacpac' #SUSTIUIR
+  AZURE_SQL_SERVER: darvsc701.database.windows.net
+  AZURE_SQL_DATABASE: Productos
+  DACPAC_PATH: 'Seguridad/Seguridad.API/BD/bin/Release/BD.dacpac'
 
 on:
   push:
     branches: [ "main" ]
     paths:
-      - 'Seguridad/Seguridad.API/BD/**'   #SUSTIUIR
+      - 'Seguridad/Seguridad.API/BD/**'
   workflow_dispatch:
 
 permissions:
   contents: read
+  packages: read
 
 jobs:
   build-and-deploy-database:
@@ -41,12 +31,31 @@ jobs:
       - name: Setup NuGet
         uses: NuGet/setup-nuget@v1
 
+      - name: Create NuGet.Config with GitHub Packages credentials
+        run: |
+          $content = @"
+          <?xml version="1.0" encoding="utf-8"?>
+          <configuration>
+            <packageSources>
+              <add key="github" value="https://nuget.pkg.github.com/SC-701/index.json" />
+            </packageSources>
+            <packageSourceCredentials>
+              <github>
+                <add key="Username" value="${{ github.actor }}" />
+                <add key="ClearTextPassword" value="${{ secrets.PaquetesTOKEN }}" />
+              </github>
+            </packageSourceCredentials>
+          </configuration>
+          "@
+          $content | Out-File -FilePath "Seguridad/Seguridad.API/NuGet.Config" -Encoding utf8
+        shell: powershell
+
       - name: Restore NuGet packages
         run: nuget restore "Seguridad/Seguridad.API/Seguridad.sln"
 
       - name: Build Database Project
         run: |
-          msbuild "Seguridad/Seguridad.API/BD/BD.sqlproj" /p:Configuration=Release /p:Platform="Any CPU" /p:OutputPath="./bin/Release/" 
+          msbuild "Seguridad/Seguridad.API/BD/BD.sqlproj" /p:Configuration=Release /p:Platform="Any CPU" /p:OutputPath="./bin/Release/"
         shell: cmd
 
       - name: Verify DACPAC file exists
