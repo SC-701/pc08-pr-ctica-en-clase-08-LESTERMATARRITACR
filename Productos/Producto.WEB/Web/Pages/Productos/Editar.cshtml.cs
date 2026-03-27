@@ -1,5 +1,6 @@
 using Abstracciones.Interfaces.Reglas;
 using Abstracciones.Modelos;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -10,6 +11,7 @@ using System.Text.RegularExpressions;
 
 namespace Web.Pages.Productos
 {
+     [Authorize]
     public class EditarModel : PageModel
     {
         private IConfiguracion _configuracion;
@@ -43,7 +45,7 @@ namespace Web.Pages.Productos
 
             string endpoint = _configuracion.ObtenerMetodo("ApiEndPoint", "ObtenerProducto");
 
-            var cliente = new HttpClient();
+            var cliente = ObtenerClienteConToken();
 
             var solicitud = new HttpRequestMessage(HttpMethod.Get, string.Format(endpoint, id));
 
@@ -120,7 +122,7 @@ namespace Web.Pages.Productos
 
             string endpoint = _configuracion.ObtenerMetodo("ApiEndPoint", "EditarProducto");
 
-            var cliente = new HttpClient();
+            var cliente = ObtenerClienteConToken();
 
             var respuesta = await cliente.PutAsJsonAsync(
                 string.Format(endpoint, producto.Id.ToString()),
@@ -143,7 +145,7 @@ namespace Web.Pages.Productos
         private async Task ObtenerCategoriasAsync()
         {
             string endpoint = _configuracion.ObtenerMetodo("ApiEndPoint", "ObtenerCategorias");
-            var cliente = new HttpClient();
+            var cliente = ObtenerClienteConToken();
             var solicitud = new HttpRequestMessage(HttpMethod.Get, endpoint);
             var respuesta = await cliente.SendAsync(solicitud);
             respuesta.EnsureSuccessStatusCode();
@@ -172,7 +174,7 @@ namespace Web.Pages.Productos
         private async Task<List<SubCategoria>> ObtenersubCategoriasAsync(Guid categoriaId)
         {
             string endpoint = _configuracion.ObtenerMetodo("ApiEndPoint", "ObtenerSubCategorias");
-            var cliente = new HttpClient();
+            var cliente = ObtenerClienteConToken();
             var solicitud = new HttpRequestMessage(HttpMethod.Get, string.Format(endpoint, categoriaId));
             var respuesta = await cliente.SendAsync(solicitud);
             respuesta.EnsureSuccessStatusCode();
@@ -184,6 +186,18 @@ namespace Web.Pages.Productos
             }
 
             return new List<SubCategoria>();
+        }
+
+        private HttpClient ObtenerClienteConToken()
+        {
+            var tokenClaim = HttpContext.User.Claims
+                .FirstOrDefault(c => c.Type == "Token");
+            var cliente = new HttpClient();
+            if (tokenClaim != null)
+                cliente.DefaultRequestHeaders.Authorization =
+                    new System.Net.Http.Headers.AuthenticationHeaderValue(
+                        "Bearer", tokenClaim.Value);
+            return cliente;
         }
     }
 }
