@@ -1,38 +1,54 @@
-Lester Eduw Matarrita Rodriguez
+name: Publicar paquetes NuGet de Autorización
 
+on:
+  push:
+    branches: [ "main" ]
+    paths:
+      - 'Seguridad/Seguridad.MiddlewareAutorizacion/**'
+  workflow_dispatch:
 
-Karina.  directora 
-9am 
+permissions:
+  contents: read
+  packages: write
 
-Karol. muchacha que me atendio ayer
+jobs:
+  publish:
+    runs-on: ubuntu-latest 
 
-Lista de clientes 
+    steps:
+      - uses: actions/checkout@v4
 
-Liste de estudiantes
+      - name: Setup .NET 8
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0'
 
-Leches unicamente como Productos 
+      - name: Restaurar dependencias
+        run: |
+          cd "Seguridad/Seguridad.MiddlewareAutorizacion"
+          dotnet restore
 
-utilizan todo en Formatos. en libro les gustaria manejar pdf y word
+      - name: Compilar en Release
+        run: |
+          cd "Seguridad/Seguridad.MiddlewareAutorizacion"
+          dotnet build --configuration Release --no-restore
 
-Entregas de leche, si el niño esta de denustricion
+      - name: Cleanup old .nupkg files
+        run: |
+          rm -f Seguridad/Seguridad.MiddlewareAutorizacion/nupkgs/*.nupkg
 
-Nombres de los clientes
+      - name: Empaquetar (dotnet pack)
+        run: |
+          cd "Seguridad/Seguridad.MiddlewareAutorizacion"
+          dotnet pack --configuration Release --no-build --output ./nupkgs
 
-Todo lo hacen a mano.
+      - name: Set up NuGet sources
+        run: dotnet nuget add source "https://nuget.pkg.github.com/SC-701/index.json" --name "github" --username ${{ github.actor }} --password ${{ secrets.GITHUB_TOKEN }} --store-password-in-clear-text
 
-Son mil personas de leche en un papel solo productos, solo a las madres o niños. 
-
-Tienen los mil clientes que tienen que darles la leche para madres, para niños, dap es como tipo comedera es como para niños en desnutricion. que sdea el nombre y si esta entregado  o no y a las madres. 
-Les gustaria como una gestion donde se vean que clientes estan pendientes por entregar leche o ya esta en estado oendente o entregado, etc.
-
-tienen 2 computadoras, tienen internet. 
-
-Este corre oes de la jefa de cartago.
-
-lucrecia.aveldano@cen-cinai.go.cr
-
-alvedano.
-Es la dueña de los centros educativos de cinai 
-
-
-
+      - name: Publicar en GitHub Packages
+        run: |
+          cd "Seguridad/Seguridad.MiddlewareAutorizacion"
+          dotnet nuget push ./nupkgs/*.nupkg \
+            --source "https://nuget.pkg.github.com/SC-701/index.json" \
+            --api-key ${{ secrets.GITHUB_TOKEN }} \
+            --skip-duplicate
